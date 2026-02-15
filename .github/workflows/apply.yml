@@ -11,8 +11,11 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
-          cache: 'pip' # caching pip dependencies
-      - run: pip install -r requirements.txt
+          python-version: '3.x'
+          cache: 'pip'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
 
       - run: python applier.py
