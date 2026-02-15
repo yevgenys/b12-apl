@@ -2,17 +2,18 @@ name: Run applier
 
 on:
   workflow_dispatch:
-env:
-  REPOSITORY_LINK: ${{ github.server_url }}/${{ github.repository }}
-  ACTION_RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-  CV_LINK: ${{ vars.CV_LINK }}
-  EMAIL: ${{ vars.EMAIL }}
-  FULL_NAME: ${{ vars.FULL_NAME }}
-  SIGNING_SECRET: ${{ vars.SIGNING_SECRET }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
+    environment: payload_input
+    env:
+      REPOSITORY_LINK: ${{ github.server_url }}/${{ github.repository }}
+      ACTION_RUN_LINK: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      CV_LINK: ${{ vars.CV_LINK }}
+      EMAIL: ${{ vars.EMAIL }}
+      FULL_NAME: ${{ vars.FULL_NAME }}
+      SIGNING_SECRET: ${{ vars.SIGNING_SECRET }}    
       
     steps:
       - uses: actions/checkout@v6
@@ -25,6 +26,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - run: |
-          echo "REPOSITORY_LINK: $REPOSITORY_LINK"
-          echo "FULL_NAME:  $FULL_NAME"
+      - run: python applier.py
